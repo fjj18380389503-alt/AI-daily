@@ -389,7 +389,7 @@
         const pod = data.podcasts[0];
         document.getElementById('podcast-section').style.display = 'flex';
         document.getElementById('podcast-card').style.display = 'flex';
-        document.getElementById('podcast-title').textContent = pod.title || '—';
+        document.getElementById('podcast-title').textContent = pod.titleZh || pod.zh || pod.title_zh || pod.title || '—';
         document.getElementById('podcast-show').textContent = pod.name || '';
         document.getElementById('podcast-link').href = pod.url || '#';
       }
