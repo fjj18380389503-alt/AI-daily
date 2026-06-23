@@ -378,7 +378,8 @@
         document.getElementById(`avatar-${i}`).textContent = initials;
         document.getElementById(`name-${i}`).textContent = b.name || b.username;
         document.getElementById(`bio-${i}`).textContent = b.bio ? b.bio.slice(0, 40) : '';
-        document.getElementById(`tweet-${i}`).textContent = tweet.text ? tweet.text.slice(0, 180) + (tweet.text.length > 180 ? '...' : '') : '';
+        const displayText = tweet.textZh || tweet.text || '';
+        document.getElementById(`tweet-${i}`).textContent = displayText.slice(0, 180) + (displayText.length > 180 ? '...' : '');
         const linkEl = document.getElementById(`link-${i}`);
         linkEl.href = tweet.url || '#';
         linkEl.textContent = '查看原推';
