@@ -364,7 +364,7 @@
   const dateStr = today.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric' });
   document.getElementById('date-label').textContent = dateStr;
 
-  const DATA_PATH = 'today.json';
+  const DATA_PATH = `today.json?v=${Date.now()}`;
 
   fetch(DATA_PATH)
     .then(r => r.json())
@@ -378,7 +378,7 @@
         document.getElementById(`avatar-${i}`).textContent = initials;
         document.getElementById(`name-${i}`).textContent = b.name || b.username;
         document.getElementById(`bio-${i}`).textContent = b.bio ? b.bio.slice(0, 40) : '';
-        const displayText = tweet.textZh || tweet.text || '';
+        const displayText = tweet.textZh || tweet.zh || tweet.text_zh || tweet.text || '';
         document.getElementById(`tweet-${i}`).textContent = displayText.slice(0, 180) + (displayText.length > 180 ? '...' : '');
         const linkEl = document.getElementById(`link-${i}`);
         linkEl.href = tweet.url || '#';
