@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 日报</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --faint: #e8e4dc;
+    --paper: #f7f4ef;
+    --accent: #c0392b;
+    --serif: 'Noto Serif SC', Georgia, serif;
+    --sans: 'Noto Sans SC', system-ui, sans-serif;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 2rem 0 1.25rem;
+    text-align: center;
+  }
+  .masthead-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .masthead-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .masthead-meta {
+    margin-top: 0.75rem;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .masthead-meta span::before {
+    content: '— ';
+  }
+  .masthead-meta span::after {
+    content: ' —';
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin: 2.5rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--faint);
+  }
+
+  /* ── BUILDER CARD ── */
+  .builder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--faint);
+    border: 1px solid var(--faint);
+  }
+  @media (max-width: 600px) {
+    .builder-grid { grid-template-columns: 1fr; }
+  }
+
+  .builder-card {
+    background: var(--paper);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .builder-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .builder-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .builder-name {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  .builder-bio {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .tweet-text {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--ink);
+    flex: 1;
+  }
+  .tweet-text strong {
+    font-weight: 500;
+  }
+
+  .tweet-link {
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.15s;
+  }
+  .tweet-link:hover { color: var(--accent); }
+  .tweet-link::before { content: '↗ '; }
+
+  .tweet-stats {
+    font-size: 11px;
+    color: var(--faint);
+    display: flex;
+    gap: 1rem;
+  }
+  .tweet-stat { color: var(--muted); }
+
+  /* ── FEATURED (full width card) ── */
+  .builder-card.featured {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+  .builder-card.featured .tweet-text {
+    font-size: 15px;
+    font-family: var(--serif);
+    line-height: 1.8;
+  }
+  .builder-card.featured .builder-header {
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 120px;
+  }
+  @media (max-width: 600px) {
+    .builder-card.featured { flex-direction: column; }
+  }
+
+  /* ── PODCAST ── */
+  .podcast-card {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2rem;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+  .podcast-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .podcast-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+  .podcast-show {
+    font-size: 12px;
+    opacity: 0.5;
+  }
+  .podcast-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 1rem;
+    font-size: 12px;
+    color: var(--paper);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+  }
+  .podcast-link:hover { opacity: 1; }
+  .podcast-link::before { content: '↗ '; }
+
+  /* ── DIVIDER ── */
+  .rule {
+    border: none;
+    border-top: 1px solid var(--faint);
+    margin: 2.5rem 0;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 2px solid var(--ink);
+    padding: 1.5rem 0;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: 3rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="container">
+  <header class="masthead">
+    <p class="masthead-eyebrow">每日精选</p>
+    <h1 class="masthead-title">AI 日报</h1>
+    <div class="masthead-meta">
+      <span id="date-label">2026年6月23日</span>
+      <span id="count-label">今日追踪 24 位 Builder</span>
+    </div>
+  </header>
+</div>
+
+<!-- BUILDERS -->
+<div class="container">
+  <div class="section-label">Builder 动态</div>
+
+  <div class="builder-grid" id="builder-grid">
+
+    <!-- FEATURED (first builder, full width) -->
+    <div class="builder-card featured">
+      <div class="builder-header">
+        <div class="builder-avatar" id="avatar-0">SW</div>
+        <div>
+          <div class="builder-name" id="name-0">swyx</div>
+          <div class="builder-bio" id="bio-0">Developer Educator</div>
+        </div>
+      </div>
+      <div>
+        <p class="tweet-text" id="tweet-0">正在加载今日内容...</p>
+        <a class="tweet-link" id="link-0" href="#" target="_blank">查看原推</a>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="builder-card">
+      <div class="builder-header">
+        <div class="builder-avatar" id="avatar-1">--</div>
+        <div>
+          <div class="builder-name" id="name-1">—</div>
+          <div class="builder-bio" id="bio-1"></div>
+        </div>
+      </div>
+      <p class="tweet-text" id="tweet-1"></p>
+      <a class="tweet-link" id="link-1" href="#" target="_blank">查看原推</a>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="builder-card">
+      <div class="builder-header">
+        <div class="builder-avatar" id="avatar-2">--</div>
+        <div>
+          <div class="builder-name" id="name-2">—</div>
+          <div class="builder-bio" id="bio-2"></div>
+        </div>
+      </div>
+      <p class="tweet-text" id="tweet-2"></p>
+      <a class="tweet-link" id="link-2" href="#" target="_blank">查看原推</a>
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="builder-card">
+      <div class="builder-header">
+        <div class="builder-avatar" id="avatar-3">--</div>
+        <div>
+          <div class="builder-name" id="name-3">—</div>
+          <div class="builder-bio" id="bio-3"></div>
+        </div>
+      </div>
+      <p class="tweet-text" id="tweet-3"></p>
+      <a class="tweet-link" id="link-3" href="#" target="_blank">查看原推</a>
+    </div>
+
+    <!-- CARD 5 -->
+    <div class="builder-card">
+      <div class="builder-header">
+        <div class="builder-avatar" id="avatar-4">--</div>
+        <div>
+          <div class="builder-name" id="name-4">—</div>
+          <div class="builder-bio" id="bio-4"></div>
+        </div>
+      </div>
+      <p class="tweet-text" id="tweet-4"></p>
+      <a class="tweet-link" id="link-4" href="#" target="_blank">查看原推</a>
+    </div>
+
+  </div>
+
+  <!-- PODCAST -->
+  <div class="section-label" id="podcast-section" style="display:none">播客精选</div>
+  <div class="podcast-card" id="podcast-card" style="display:none">
+    <div style="flex:1">
+      <p class="podcast-label">本期推荐</p>
+      <p class="podcast-title" id="podcast-title">—</p>
+      <p class="podcast-show" id="podcast-show">—</p>
+      <a class="podcast-link" id="podcast-link" href="#" target="_blank">收听完整集数</a>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <footer class="footer">
+    由 follow-builders · guizang-ppt-skill 生成 &nbsp;|&nbsp; 内容来自公开信息源
+  </footer>
+</div>
+
+<script>
+(function() {
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('date-label').textContent = dateStr;
+
+  const DATA_PATH = 'today.json';
+
+  fetch(DATA_PATH)
+    .then(r => r.json())
+    .then(data => {
+      const builders = (data.x || []).filter(b => b.tweets && b.tweets.length > 0);
+      document.getElementById('count-label').textContent = `今日追踪 ${builders.length} 位 Builder`;
+
+      builders.slice(0, 5).forEach((b, i) => {
+        const tweet = b.tweets[0];
+        const initials = b.name ? b.name.slice(0, 2).toUpperCase() : '??';
+        document.getElementById(`avatar-${i}`).textContent = initials;
+        document.getElementById(`name-${i}`).textContent = b.name || b.username;
+        document.getElementById(`bio-${i}`).textContent = b.bio ? b.bio.slice(0, 40) : '';
+        document.getElementById(`tweet-${i}`).textContent = tweet.text ? tweet.text.slice(0, 180) + (tweet.text.length > 180 ? '...' : '') : '';
+        const linkEl = document.getElementById(`link-${i}`);
+        linkEl.href = tweet.url || '#';
+        linkEl.textContent = '查看原推';
+      });
+
+      if (data.podcasts && data.podcasts.length > 0) {
+        const pod = data.podcasts[0];
+        document.getElementById('podcast-section').style.display = 'flex';
+        document.getElementById('podcast-card').style.display = 'flex';
+        document.getElementById('podcast-title').textContent = pod.title || '—';
+        document.getElementById('podcast-show').textContent = pod.name || '';
+        document.getElementById('podcast-link').href = pod.url || '#';
+      }
+    })
+    .catch(() => {
+      document.getElementById('tweet-0').textContent = '⚠ 请将 today.json 与此 HTML 放在同一目录下，刷新即可加载数据。';
+    });
+})();
+</script>
+</body>
+</html>
